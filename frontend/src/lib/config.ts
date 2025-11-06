@@ -16,29 +16,29 @@ export const FACTS_API_URL = import.meta.env.VITE_FACTS_API_URL ?? "/facts";
 
 export const THEME_STORAGE_KEY = "chatkit-boilerplate-theme";
 
-export const GREETING = "Welcome to the ChatKit Demo";
+export const GREETING = "TicketBot - Let me know what's wrong and I'll get that info to the right person";
 
 export const STARTER_PROMPTS: StartScreenPrompt[] = [
   {
-    label: "What can you do?",
-    prompt: "What can you do?",
+    label: "Report an issue",
+    prompt: "I need to report an issue",
     icon: "circle-question",
   },
   {
-    label: "My name is Kaz",
-    prompt: "My name is Kaz",
+    label: "Technical problem",
+    prompt: "I'm having a technical problem",
+    icon: "sparkle",
+  },
+  {
+    label: "Account help",
+    prompt: "I need help with my account",
     icon: "book-open",
   },
   {
-    label: "What's the weather in Paris?",
-    prompt: "What's the weather in Paris?",
+    label: "General question",
+    prompt: "I have a general question",
     icon: "search",
-  },
-  {
-    label: "Change the theme to dark mode",
-    prompt: "Change the theme to dark mode",
-    icon: "sparkle",
   },
 ];
 
-export const PLACEHOLDER_INPUT = "Share a fact about yourself";
+export const PLACEHOLDER_INPUT = "Describe your issue or question...";

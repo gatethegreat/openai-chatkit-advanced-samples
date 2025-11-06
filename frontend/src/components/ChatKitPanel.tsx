@@ -26,7 +26,26 @@ export function ChatKitPanel({
   const processedFacts = useRef(new Set<string>());
 
   const chatkit = useChatKit({
-    api: { url: CHATKIT_API_URL, domainKey: CHATKIT_API_DOMAIN_KEY },
+    api: {
+      async getClientSecret(existing) {
+        if (existing) {
+          // For now, create a new session each time
+          // You can implement refresh logic here if needed
+        }
+
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+        const sessionUrl = backendUrl ? `${backendUrl}/api/chatkit/session` : '/api/chatkit/session';
+
+        const res = await fetch(sessionUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const { client_secret } = await res.json();
+        return client_secret;
+      },
+    },
     theme: {
       colorScheme: theme,
       color: {

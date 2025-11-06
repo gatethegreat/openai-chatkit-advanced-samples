@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from chatkit.server import StreamingResult
 from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from starlette.responses import JSONResponse
+from openai import OpenAI
 
 from .chat import (
     FactAssistantServer,
@@ -16,6 +19,22 @@ from .chat import (
 from .facts import fact_store
 
 app = FastAPI(title="ChatKit API")
+
+# Configure CORS to allow requests from GitHub Pages
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://gatethegreat.github.io",
+        "http://localhost:5170",
+        "http://127.0.0.1:5170"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# OpenAI client for hosted workflow
+openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 _chatkit_server: FactAssistantServer | None = create_chatkit_server()
 
@@ -70,3 +89,20 @@ async def discard_fact(fact_id: str) -> dict[str, Any]:
 @app.get("/health")
 async def health_check() -> dict[str, str]:
     return {"status": "healthy"}
+
+
+@app.post("/api/chatkit/session")
+async def create_chatkit_session() -> dict[str, str]:
+    """Create a ChatKit session for the hosted workflow."""
+    workflow_id = os.environ.get("CHATKIT_WORKFLOW_ID", "wf_68e6daaa077c8190ba4b536ae0ce309401143f1d8d969c22")
+
+    try:
+        session = openai_client.chatkit.sessions.create(
+            workflow={"id": workflow_id}
+        )
+        return {"client_secret": session.client_secret}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create ChatKit session: {str(e)}"
+        )
