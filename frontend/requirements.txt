@@ -1,0 +1,5 @@
+fastapi>=0.114.1
+httpx>=0.28
+uvicorn[standard]>=0.36
+openai>=1.40
+openai-chatkit>=1.0.2
