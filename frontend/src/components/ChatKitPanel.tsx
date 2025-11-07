@@ -27,6 +27,7 @@ export function ChatKitPanel({
 
   const chatkit = useChatKit({
     api: {
+      domainKey: CHATKIT_API_DOMAIN_KEY,
       async getClientSecret(existing) {
         if (existing) {
           // For now, create a new session each time
