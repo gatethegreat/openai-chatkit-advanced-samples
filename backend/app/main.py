@@ -95,12 +95,27 @@ async def health_check() -> dict[str, str]:
 async def create_chatkit_session() -> dict[str, str]:
     """Create a ChatKit session for the hosted workflow."""
     workflow_id = os.environ.get("CHATKIT_WORKFLOW_ID", "wf_68e6daaa077c8190ba4b536ae0ce309401143f1d8d969c22")
+    api_key = os.environ.get("OPENAI_API_KEY")
 
     try:
-        session = openai_client.chatkit.sessions.create(
-            workflow={"id": workflow_id}
-        )
-        return {"client_secret": session.client_secret}
+        # Use REST API directly since Python SDK might not have chatkit sessions yet
+        import httpx
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.openai.com/v1/chatkit/sessions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "OpenAI-Beta": "chatkit_beta=v1"
+                },
+                json={
+                    "workflow": {"id": workflow_id}
+                },
+                timeout=30.0
+            )
+            response.raise_for_status()
+            data = response.json()
+            return {"client_secret": data["client_secret"]}
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
