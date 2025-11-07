@@ -25,6 +25,11 @@ export function ChatKitPanel({
 }: ChatKitPanelProps) {
   const processedFacts = useRef(new Set<string>());
 
+  console.log('ChatKitPanel rendering with:', {
+    url: CHATKIT_API_URL,
+    domainKey: CHATKIT_API_DOMAIN_KEY,
+  });
+
   const chatkit = useChatKit({
     api: {
       url: CHATKIT_API_URL,
@@ -97,9 +102,17 @@ export function ChatKitPanel({
     },
   });
 
+  console.log('ChatKit control:', chatkit.control);
+
   return (
     <div className="relative h-full w-full overflow-hidden border border-slate-200/60 bg-white shadow-card dark:border-slate-800/70 dark:bg-slate-900">
-      <ChatKit control={chatkit.control} className="block h-full w-full" />
+      {chatkit.control ? (
+        <ChatKit control={chatkit.control} className="block h-full w-full" />
+      ) : (
+        <div style={{ padding: '20px', color: 'red' }}>
+          ChatKit control is null/undefined. Check console for details.
+        </div>
+      )}
     </div>
   );
 }
