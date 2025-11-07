@@ -16,7 +16,7 @@ export default defineConfig({
     },
     // For production deployments, you need to add your public domains to this list
     allowedHosts: [
-      // You can remove these examples added just to demonstrate how to configure the allowlist
+      "gatethegreat.github.io",
       ".ngrok.io",
       ".trycloudflare.com",
     ],
