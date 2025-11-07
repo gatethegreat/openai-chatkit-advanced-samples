@@ -20,7 +20,7 @@ from .facts import fact_store
 
 app = FastAPI(title="ChatKit API")
 
-# Configure CORS to allow requests from GitHub Pages
+# Configure CORS to allow requests from GitHub Pages and local development
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
