@@ -24,22 +24,22 @@ export const SUPPORT_CUSTOMER_URL =
 
 export const SUPPORT_GREETING =
   import.meta.env.VITE_SUPPORT_GREETING ??
-  "Thanks for reaching OpenSkies concierge. How can I make your trip smoother today?";
+  "Welcome to TicketBot! Let me know what's wrong and I'll get that info to the right person.";
 
 export const SUPPORT_STARTER_PROMPTS: StartScreenPrompt[] = [
   {
-    label: "Change my seat",
-    prompt: "Can you move me to seat 14C on flight OA476?",
+    label: "Report an issue",
+    prompt: "I need to report an issue",
     icon: "lightbulb",
   },
   {
-    label: "Cancel trip",
-    prompt: "I need to cancel my trip and request a refund.",
+    label: "Technical problem",
+    prompt: "I'm having a technical problem",
     icon: "sparkle",
   },
   {
-    label: "Add checked bag",
-    prompt: "Add one more checked bag to my reservation.",
+    label: "Account help",
+    prompt: "I need help with my account",
     icon: "compass",
   },
 ];

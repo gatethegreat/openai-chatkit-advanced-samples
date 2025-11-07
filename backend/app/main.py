@@ -26,7 +26,9 @@ app.add_middleware(
     allow_origins=[
         "https://gatethegreat.github.io",
         "http://localhost:5170",
-        "http://127.0.0.1:5170"
+        "http://127.0.0.1:5170",
+        "http://localhost:5171",
+        "http://127.0.0.1:5171"
     ],
     allow_credentials=True,
     allow_methods=["*"],
